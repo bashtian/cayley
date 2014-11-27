@@ -28,10 +28,12 @@ import (
 	"github.com/google/cayley/quad"
 )
 
+const QuadStoreType = "memstore"
+
 func init() {
-	graph.RegisterQuadStore("memstore", false, func(string, graph.Options) (graph.QuadStore, error) {
+	graph.RegisterQuadStore(QuadStoreType, false, func(string, graph.Options) (graph.QuadStore, error) {
 		return newQuadStore(), nil
-	}, nil)
+	}, nil, nil)
 }
 
 type QuadDirectionIndex struct {
@@ -265,3 +267,7 @@ func (qs *QuadStore) NodesAllIterator() graph.Iterator {
 }
 
 func (qs *QuadStore) Close() {}
+
+func (qs *QuadStore) GetType() string {
+	return QuadStoreType
+}

@@ -31,11 +31,12 @@ import (
 	"github.com/google/cayley/quad"
 )
 
-func init() {
-	graph.RegisterQuadStore("mongo", true, newQuadStore, createNewMongoGraph)
-}
-
 const DefaultDBName = "cayley"
+const QuadStoreType = "mongo"
+
+func init() {
+	graph.RegisterQuadStore(QuadStoreType, true, newQuadStore, createNewMongoGraph, nil)
+}
 
 var (
 	hashPool = sync.Pool{
@@ -359,3 +360,7 @@ func (qs *QuadStore) QuadDirection(in graph.Value, d quad.Direction) graph.Value
 }
 
 // TODO(barakmich): Rewrite bulk loader. For now, iterating around blocks is the way we'll go about it.
+
+func (qs *QuadStore) GetType() string {
+	return QuadStoreType
+}
