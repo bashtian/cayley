@@ -515,6 +515,6 @@ func (qs *QuadStore) FixedIterator() graph.FixedIterator {
 	return iterator.NewFixed(compareTokens)
 }
 
-func (qs *QuadStore) GetType() string {
+func (qs *QuadStore) Type() string {
 	return QuadStoreType
 }
