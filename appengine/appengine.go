@@ -17,16 +17,17 @@
 package main
 
 import (
-	"github.com/barakmich/glog"
 	"os"
 	"time"
 
-	"github.com/google/cayley/config"
-	"github.com/google/cayley/db"
-	"github.com/google/cayley/http"
+	"github.com/barakmich/glog"
 
-	_ "github.com/google/cayley/graph/gaedatastore"
-	_ "github.com/google/cayley/writer"
+	"github.com/bashtian/cayley/config"
+	"github.com/bashtian/cayley/db"
+	"github.com/bashtian/cayley/http"
+
+	_ "github.com/bashtian/cayley/graph/gaedatastore"
+	_ "github.com/bashtian/cayley/writer"
 )
 
 var (

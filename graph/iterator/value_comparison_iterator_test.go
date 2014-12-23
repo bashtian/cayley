@@ -18,7 +18,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/google/cayley/graph"
+	"github.com/bashtian/cayley/graph"
 )
 
 var simpleStore = &store{data: []string{"0", "1", "2", "3", "4", "5"}}

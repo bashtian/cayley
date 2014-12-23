@@ -15,8 +15,8 @@
 package bolt
 
 import (
-	"github.com/google/cayley/graph"
-	"github.com/google/cayley/graph/iterator"
+	"github.com/bashtian/cayley/graph"
+	"github.com/bashtian/cayley/graph/iterator"
 )
 
 func (qs *QuadStore) OptimizeIterator(it graph.Iterator) (graph.Iterator, bool) {

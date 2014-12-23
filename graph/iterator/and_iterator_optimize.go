@@ -19,7 +19,7 @@ import (
 
 	"github.com/barakmich/glog"
 
-	"github.com/google/cayley/graph"
+	"github.com/bashtian/cayley/graph"
 )
 
 // Perhaps the most tricky file in this entire module. Really a method on the

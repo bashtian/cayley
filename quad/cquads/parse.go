@@ -22,9 +22,8 @@ import (
 	"fmt"
 	"unicode"
 
-	"github.com/google/cayley/quad"
+	"github.com/bashtian/cayley/quad"
 )
-
 
 // line 30 "parse.go"
 const quads_start int = 1

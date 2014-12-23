@@ -22,7 +22,7 @@ import (
 	"sync"
 
 	"github.com/barakmich/glog"
-	"github.com/google/cayley/quad"
+	"github.com/bashtian/cayley/quad"
 )
 
 type Tagger struct {

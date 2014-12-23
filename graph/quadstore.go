@@ -25,7 +25,7 @@ import (
 	"errors"
 
 	"github.com/barakmich/glog"
-	"github.com/google/cayley/quad"
+	"github.com/bashtian/cayley/quad"
 )
 
 // Value defines an opaque "quad store value" type. However the backend wishes

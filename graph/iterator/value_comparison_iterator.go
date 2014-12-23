@@ -30,7 +30,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/google/cayley/graph"
+	"github.com/bashtian/cayley/graph"
 )
 
 type Operator int

@@ -18,12 +18,15 @@ package gaedatastore
 
 import (
 	"fmt"
-	"github.com/google/cayley/graph"
-	"github.com/google/cayley/graph/iterator"
-	"github.com/google/cayley/quad"
+
+	"github.com/bashtian/cayley/graph"
+	"github.com/bashtian/cayley/graph/iterator"
+	"github.com/bashtian/cayley/quad"
+	"github.com/mjibson/goon"
+
+	"github.com/barakmich/glog"
 
 	"appengine/datastore"
-	"github.com/barakmich/glog"
 )
 
 type Iterator struct {

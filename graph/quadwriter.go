@@ -25,7 +25,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/google/cayley/quad"
+	"github.com/bashtian/cayley/quad"
 )
 
 type Procedure int8

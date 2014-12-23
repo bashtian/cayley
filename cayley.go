@@ -33,22 +33,22 @@ import (
 
 	"github.com/barakmich/glog"
 
-	"github.com/google/cayley/config"
-	"github.com/google/cayley/db"
-	"github.com/google/cayley/graph"
-	"github.com/google/cayley/http"
-	"github.com/google/cayley/quad"
-	"github.com/google/cayley/quad/cquads"
-	"github.com/google/cayley/quad/nquads"
+	"github.com/bashtian/cayley/config"
+	"github.com/bashtian/cayley/db"
+	"github.com/bashtian/cayley/graph"
+	"github.com/bashtian/cayley/http"
+	"github.com/bashtian/cayley/quad"
+	"github.com/bashtian/cayley/quad/cquads"
+	"github.com/bashtian/cayley/quad/nquads"
 
 	// Load all supported backends.
-	_ "github.com/google/cayley/graph/bolt"
-	_ "github.com/google/cayley/graph/leveldb"
-	_ "github.com/google/cayley/graph/memstore"
-	_ "github.com/google/cayley/graph/mongo"
+	_ "github.com/bashtian/cayley/graph/bolt"
+	_ "github.com/bashtian/cayley/graph/leveldb"
+	_ "github.com/bashtian/cayley/graph/memstore"
+	_ "github.com/bashtian/cayley/graph/mongo"
 
 	// Load writer registry
-	_ "github.com/google/cayley/writer"
+	_ "github.com/bashtian/cayley/writer"
 )
 
 var (

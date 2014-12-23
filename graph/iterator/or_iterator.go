@@ -22,7 +22,7 @@ package iterator
 // May return the same value twice -- once for each branch.
 
 import (
-	"github.com/google/cayley/graph"
+	"github.com/bashtian/cayley/graph"
 )
 
 type Or struct {

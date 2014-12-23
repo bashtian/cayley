@@ -29,11 +29,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/google/cayley/config"
-	"github.com/google/cayley/db"
-	"github.com/google/cayley/graph"
-	"github.com/google/cayley/quad"
-	"github.com/google/cayley/query/gremlin"
+	"github.com/bashtian/cayley/config"
+	"github.com/bashtian/cayley/db"
+	"github.com/bashtian/cayley/graph"
+	"github.com/bashtian/cayley/quad"
+	"github.com/bashtian/cayley/query/gremlin"
 )
 
 var backend = flag.String("backend", "memstore", "Which backend to test. Loads test data to /tmp if not present.")

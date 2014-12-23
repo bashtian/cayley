@@ -19,11 +19,11 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/google/cayley/graph"
-	"github.com/google/cayley/quad"
+	"github.com/bashtian/cayley/graph"
+	"github.com/bashtian/cayley/quad"
 
-	_ "github.com/google/cayley/graph/memstore"
-	_ "github.com/google/cayley/writer"
+	_ "github.com/bashtian/cayley/graph/memstore"
+	_ "github.com/bashtian/cayley/writer"
 )
 
 // This is a simple test graph.

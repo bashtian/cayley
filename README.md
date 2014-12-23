@@ -32,9 +32,9 @@ Rough performance testing shows that, on consumer hardware and an average disk, 
 
 ## Getting Started
 
-Grab the latest [release binary](http://github.com/google/cayley/releases) and extract it wherever you like.
+Grab the latest [release binary](http://github.com/bashtian/cayley/releases) and extract it wherever you like.
 
-If you prefer to build from source, see the documentation on the wiki at [How to start hacking on Cayley](https://github.com/google/cayley/wiki/How-to-start-hacking-on-Cayley)
+If you prefer to build from source, see the documentation on the wiki at [How to start hacking on Cayley](https://github.com/bashtian/cayley/wiki/How-to-start-hacking-on-Cayley)
 
 `cd` to the directory and give it a quick test with:
 ```

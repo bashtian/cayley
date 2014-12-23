@@ -17,8 +17,8 @@ package graph_test
 import (
 	"testing"
 
-	. "github.com/google/cayley/graph"
-	"github.com/google/cayley/graph/iterator"
+	. "github.com/bashtian/cayley/graph"
+	"github.com/bashtian/cayley/graph/iterator"
 )
 
 func TestSingleIterator(t *testing.T) {

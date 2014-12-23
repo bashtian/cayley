@@ -21,9 +21,9 @@ import (
 	"github.com/barakmich/glog"
 	"github.com/boltdb/bolt"
 
-	"github.com/google/cayley/graph"
-	"github.com/google/cayley/graph/iterator"
-	"github.com/google/cayley/quad"
+	"github.com/bashtian/cayley/graph"
+	"github.com/bashtian/cayley/graph/iterator"
+	"github.com/bashtian/cayley/quad"
 )
 
 type AllIterator struct {
