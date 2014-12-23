@@ -69,6 +69,9 @@ func GetQueryShape(q string, ses query.HTTP) ([]byte, error) {
 // TODO(barakmich): Turn this into proper middleware.
 func (api *API) ServeV1Query(w http.ResponseWriter, r *http.Request, params httprouter.Params) int {
 	h, err := api.GetHandleForRequest(r)
+	if err != nil {
+		return jsonResponse(w, 400, err)
+	}
 	var ses query.HTTP
 	switch params.ByName("query_lang") {
 	case "gremlin":
@@ -115,6 +118,9 @@ func (api *API) ServeV1Query(w http.ResponseWriter, r *http.Request, params http
 
 func (api *API) ServeV1Shape(w http.ResponseWriter, r *http.Request, params httprouter.Params) int {
 	h, err := api.GetHandleForRequest(r)
+	if err != nil {
+		return jsonResponse(w, 400, err)
+	}
 	var ses query.HTTP
 	switch params.ByName("query_lang") {
 	case "gremlin":

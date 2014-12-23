@@ -22,7 +22,6 @@ import (
 	"github.com/bashtian/cayley/graph"
 	"github.com/bashtian/cayley/graph/iterator"
 	"github.com/bashtian/cayley/quad"
-	"github.com/mjibson/goon"
 
 	"github.com/barakmich/glog"
 
@@ -47,7 +46,7 @@ type Iterator struct {
 }
 
 var (
-	bufferSize = 50
+	bufferSize = 100
 )
 
 func NewIterator(qs *QuadStore, k string, d quad.Direction, val graph.Value) *Iterator {
@@ -68,11 +67,16 @@ func NewIterator(qs *QuadStore, k string, d quad.Direction, val graph.Value) *It
 		return &Iterator{done: true}
 	}
 	name := qs.NameOf(t)
+	//qs.context.Infof("new iterator %v %v %v", k, d, val)
 
 	// The number of references to this node is held in the nodes entity
 	key := qs.createKeyFromToken(t)
+
 	foundNode := new(NodeEntry)
-	err := datastore.Get(qs.context, key, foundNode)
+	foundNode.Id = key.StringID()
+	foundNode._kind = key.Kind()
+	//err := datastore.Get(qs.context, key, foundNode)
+	err := qs.db.Get(foundNode)
 	if err != nil && err != datastore.ErrNoSuchEntity {
 		glog.Errorf("Error: %v", err)
 		return &Iterator{done: true}
@@ -227,24 +231,37 @@ func (it *Iterator) Next() bool {
 	if it.done {
 		return false
 	}
+	mapKey := it.kind + "=" + it.dir.String() + "=" + it.name + "=" + it.last
+
+	if c, ok := cache[mapKey]; ok {
+		it.offset = 0
+		it.buffer = c.buffer
+		it.last = c.last
+		it.done = c.done
+		it.result = &Token{Kind: it.kind, Hash: c.buffer[it.offset]}
+		//it.qs.context.Infof("?next buffer (%v) %v %+v %v", mapKey, it.result, it.last, len(it.buffer))
+		return true
+	}
+
 	// Reset buffer and offset
 	it.offset = 0
 	it.buffer = make([]string, 0, bufferSize)
 	// Create query
 	// TODO (stefankoshiw) Keys only query?
-	q := datastore.NewQuery(it.kind).Limit(bufferSize)
+	q := datastore.NewQuery(it.kind)
 	if !it.isAll {
 		// Filter on the direction {subject,objekt...}
 		q = q.Filter(it.dir.String()+" =", it.name)
 	}
+	it.qs.context.Infof("it.next last cursor %+v", it.last)
 	// Get last cursor position
 	cursor, err := datastore.DecodeCursor(it.last)
 	if err == nil {
 		q = q.Start(cursor)
 	}
 	// Buffer the keys of the next 50 matches
-	t := q.Run(it.qs.context)
-	for {
+	t := it.qs.db.Run(q)
+	for i := 0; i < bufferSize; i++ {
 		// Quirk of the datastore, you cannot pass a nil value to to Next()
 		// even if you just want the keys
 		var k *datastore.Key
@@ -266,6 +283,7 @@ func (it *Iterator) Next() bool {
 		}
 		if err == datastore.Done {
 			it.done = true
+			it.qs.context.Infof("datastore.Done (%v) %v %+v %v", mapKey, it.result, it.last, len(it.buffer))
 			break
 		}
 		if err != nil {
@@ -276,18 +294,38 @@ func (it *Iterator) Next() bool {
 			it.buffer = append(it.buffer, k.StringID())
 		}
 	}
-	// Save cursor position
-	cursor, err = t.Cursor()
-	if err == nil {
-		it.last = cursor.String()
-	}
+
+	it.qs.db.Context.Infof("query len: %v done: %v key: %v", len(it.buffer), it.done, mapKey)
+
 	// Protect against bad queries
 	if it.done && len(it.buffer) == 0 {
 		glog.Warningf("Query did not return any results")
 		return false
 	}
+
+	//isBeginning := it.last == ""
+
+	// Save cursor position
+	cursor, err = t.Cursor()
+	if err == nil {
+		it.qs.context.Infof("it.next save cursor %+v", cursor.String())
+		it.last = cursor.String()
+	}
+
+	// save buffer in instance cache
+
+	if cache == nil {
+		cache = make(map[string]Cache)
+	}
+	cache[mapKey] = Cache{
+		buffer: it.buffer,
+		last:   it.last,
+		done:   it.done,
+	}
+
 	// First result
 	it.result = &Token{Kind: it.kind, Hash: it.buffer[it.offset]}
+	it.qs.context.Infof("next result %+v", it.result)
 	return true
 }
 

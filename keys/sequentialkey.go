@@ -15,9 +15,10 @@
 package keys
 
 import (
-	"github.com/google/cayley/graph"
 	"strconv"
 	"sync"
+
+	"github.com/bashtian/cayley/graph"
 )
 
 type Sequential struct {

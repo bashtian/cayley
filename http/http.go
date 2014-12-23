@@ -140,7 +140,9 @@ func (api *API) APIv1(r *httprouter.Router) {
 
 func SetupRoutes(handle *graph.Handle, cfg *config.Config) {
 	r := httprouter.New()
-	assets := findAssetsPath()
+	//assets := findAssetsPath()
+	assets := "."
+
 	if glog.V(2) {
 		glog.V(2).Infoln("Found assets at", assets)
 	}

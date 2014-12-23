@@ -54,6 +54,15 @@ type Quad struct {
 	Label     string `json:"label,omitempty"`
 }
 
+func New(subject, predicate, object, label string) Quad {
+	return Quad{
+		Subject:   subject,
+		Predicate: predicate,
+		Object:    object,
+		Label:     label,
+	}
+}
+
 // Direction specifies an edge's type.
 type Direction byte
 

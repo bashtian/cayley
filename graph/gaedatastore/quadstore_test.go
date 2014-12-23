@@ -16,6 +16,7 @@ package gaedatastore
 
 import (
 	"sort"
+	"strconv"
 	"testing"
 
 	"errors"
@@ -154,7 +155,7 @@ func TestAddRemove(t *testing.T) {
 	// Add quads
 	qs, writer, _ := makeTestStore(simpleGraph, opts)
 	if qs.Size() != 11 {
-		t.Fatal("Incorrect number of quads")
+		t.Fatalf("Incorrect number of quads: want %v have %v", 11, qs.Size())
 	}
 	all := qs.NodesAllIterator()
 	expect := []string{
@@ -179,7 +180,7 @@ func TestAddRemove(t *testing.T) {
 		t.Errorf("AddQuadSet failed, %v", err)
 	}
 	if qs.Size() != 13 {
-		t.Fatal("Incorrect number of quads")
+		t.Fatalf("Incorrect number of quads, want %v got %v", 13, qs.Size())
 	}
 	all = qs.NodesAllIterator()
 	expect = []string{
@@ -201,7 +202,7 @@ func TestAddRemove(t *testing.T) {
 	}
 
 	// Remove quad
-	toRemove := quad.Quad{"X", "follows", "B", ""}
+	toRemove := quad.New("X", "follows", "B", "")
 	err = writer.RemoveQuad(toRemove)
 	if err != nil {
 		t.Errorf("RemoveQuad failed: %v", err)
@@ -221,6 +222,39 @@ func TestAddRemove(t *testing.T) {
 	}
 	if got, ok := compareResults(qs, all, expect); !ok {
 		t.Errorf("Unexpected iterated result, got:%v expect:%v", got, expect)
+	}
+
+	addQuad := quad.New("X", "follows", "B", "")
+	err = writer.AddQuad(addQuad)
+	if err != nil {
+		t.Errorf("AddQuad failed: %v", err)
+	}
+	expect = []string{
+		"A",
+		"B",
+		"C",
+		"D",
+		"E",
+		"F",
+		"G",
+		"X",
+		"follows",
+		"status",
+		"cool",
+		"status_graph",
+	}
+	if got, ok := compareResults(qs, all, expect); !ok {
+		t.Errorf("Unexpected iterated result, got:%v expect:%v", got, expect)
+	}
+	set := []quad.Quad{}
+	for i := 0; i < 100; i++ {
+		set = append(set, quad.New("X", "follows", "B"+strconv.Itoa(i), ""))
+	}
+	if err := writer.AddQuadSet(set); err != nil {
+		t.Errorf("AddQuadSet failed, %v", err)
+	}
+	if qs.Size() != 113 {
+		t.Fatalf("Incorrect number of quads, want %v got %v", 113, qs.Size())
 	}
 }
 
