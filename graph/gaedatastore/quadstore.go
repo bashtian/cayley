@@ -34,7 +34,6 @@ import (
 
 	"appengine"
 	"appengine/datastore"
-	"appengine/memcache"
 )
 
 const (
