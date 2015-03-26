@@ -24,7 +24,6 @@ import (
 	"math"
 	"net/http"
 	"sync"
-	"time"
 
 	"github.com/google/cayley/graph"
 	"github.com/google/cayley/graph/iterator"
@@ -53,7 +52,6 @@ var (
 	hashSize = sha1.Size
 	// instance cache for datastore query results
 	cache     = map[string]Cache{}
-	cacheTime = time.Now()
 )
 
 type QuadStore struct {
@@ -61,7 +59,6 @@ type QuadStore struct {
 	makeHasher func() hash.Hash
 	context    appengine.Context
 	db         *goon.Goon
-	//cache      map[string]Cache
 }
 
 type Cache struct {
@@ -116,31 +113,6 @@ func init() {
 
 func (qs *QuadStore) resetCache() {
 	cache = make(map[string]Cache)
-	cacheTime = time.Now()
-	t, _ := cacheTime.MarshalBinary()
-	item := &memcache.Item{
-		Key:   "last_cache_reset",
-		Value: t,
-	}
-	// Add the item to the memcache, if the key does not already exist
-	if err := memcache.Add(qs.db.Context, item); err == memcache.ErrNotStored {
-		qs.db.Context.Infof("item with key %q already exists", item.Key)
-	} else if err != nil {
-		qs.db.Context.Errorf("error adding item: %v", err)
-	}
-}
-
-func (qs *QuadStore) checkCache() {
-	// Get the item from the memcache
-	if item, err := memcache.Get(qs.db.Context, "last_cache_reset"); err != nil {
-		qs.resetCache()
-	} else {
-		t := time.Time{}
-		t.UnmarshalBinary(item.Value)
-		if cacheTime.Before(time.Now()) {
-			qs.resetCache()
-		}
-	}
 }
 
 func initQuadStore(_ string, _ graph.Options) error {
@@ -521,7 +493,6 @@ func (qs *QuadStore) Size() int64 {
 		glog.Error("Error fetching size, context is nil, graph not correctly initialised")
 		return 0
 	}
-	//qs.context.Infof("Size %v", qs)
 
 	key := qs.createKeyForMetadata()
 
